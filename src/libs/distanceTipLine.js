@@ -63,7 +63,13 @@ const YLine = {
     return Math.min(rect.y + rect.height, props.y + props.height);
   }
 };
-
+/**
+ *
+ * @param {Object} activeElement 参考元素
+ * @param {Array} elmts 元素list
+ * @param {DOM} el 父元素id
+ * @returns {Object} {h:横向辅助线，v:纵向辅助线}
+ */
 export function getGuideLine(activeElement, elmts, el) {
   let { x: left, y: top, width, height } = activeElement.props;
   let container = document.querySelector(el);

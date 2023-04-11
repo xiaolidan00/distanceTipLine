@@ -2,16 +2,19 @@
   <div id="elmtContainer" @click.self="cleanActive()">
     <div
       :class="['elmt-item', activeElement.id == item.id ? 'active' : '']"
-      v-for="item in elmts"
+      v-for="(item, idx) in elmts"
       :id="item.id"
       :style="{
         left: item.props.x + 'px',
         top: item.props.y + 'px',
         width: item.props.width + 'px',
-        height: item.props.height + 'px'
+        height: item.props.height + 'px',
+        background: item.color
       }"
       @click="onActiveElmt(item.id)"
-    ></div>
+    >
+      {{ idx + 1 }}
+    </div>
 
     <div
       class="guide-line-h"
@@ -19,7 +22,7 @@
       :key="'h' + idx"
       v-for="(item, idx) in guideLineH"
     >
-      {{ item.value ? item.value + 'px' : '' }}
+      <span> {{ item.value ? item.value + 'px' : '' }}</span>
     </div>
     <div
       class="guide-line-v"
@@ -27,7 +30,7 @@
       :key="'v' + idx"
       v-for="(item, idx) in guideLineV"
     >
-      {{ item.value ? item.value + 'px' : '' }}
+      <span>{{ item.value ? item.value + 'px' : '' }}</span>
     </div>
   </div>
 </template>
@@ -90,6 +93,9 @@
     for (let i = 0; i < 10; i++) {
       list.push({
         id: 'el' + i,
+        color: `rgba(${parseInt(Math.random() * 255)},${parseInt(Math.random() * 255)},${parseInt(
+          Math.random() * 255
+        )},0.2)`,
         props: {
           x: Math.round(Math.random() * container.offsetWidth),
           y: Math.round(Math.random() * container.offsetHeight),
@@ -204,6 +210,10 @@
     position: absolute;
     align-items: center;
     justify-content: center;
+  }
+  .guide-line-h > span,
+  .guide-line-v > span {
+    display: inline-block;
     font-size: 16px;
     line-height: 16px;
     color: rgba(0, 0, 0, 0.5);
@@ -222,12 +232,14 @@
     position: absolute;
   }
   .elmt-item {
-    border: dashed 1px gray;
-    display: inline-block;
+    border: dashed 2px gray;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
+    font-size: 48px;
   }
   .elmt-item.active {
-    background-color: rgba(30, 144, 255, 0.3);
-    border: dashed 1px rgb(30, 144, 255);
+    border: solid 2px rgb(30, 144, 255);
   }
 </style>
