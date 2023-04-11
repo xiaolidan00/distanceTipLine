@@ -43,3 +43,7 @@ height:400
 当前矩形需要绘制相对于父容器的上下边界和距离，左右边界，宽高
 
 ## interactJs 拖拉拽改变大小和位置
+
+文档地址如下：
+
+https://interactjs.io/docs/
