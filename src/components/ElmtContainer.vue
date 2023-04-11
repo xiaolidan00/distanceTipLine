@@ -8,8 +8,7 @@
         left: item.props.x + 'px',
         top: item.props.y + 'px',
         width: item.props.width + 'px',
-        height: item.props.height + 'px',
-        background: item.color
+        height: item.props.height + 'px'
       }"
       @click="onActiveElmt(item.id)"
     >
@@ -36,7 +35,7 @@
 </template>
 <script setup>
   import interact from 'interactjs';
-  import { ref, onMounted, computed } from 'vue';
+  import { ref, onMounted, computed, nextTick } from 'vue';
   import { getGuideLine, setNearDistance } from '../libs/distanceTipLine';
   //设置附近的最大距离
   setNearDistance(100);
@@ -72,12 +71,12 @@
   const createGuideLine = () => {
     if (!isLock) {
       isLock = true;
-      setTimeout(() => {
+      nextTick(() => {
         let { h, v } = getGuideLine(activeElement.value, elmts.value, '#elmtContainer');
         guideLineH.value = h;
         guideLineV.value = v;
         isLock = false;
-      }, 50);
+      });
     }
   };
   //清空辅助线
@@ -93,9 +92,7 @@
     for (let i = 0; i < 10; i++) {
       list.push({
         id: 'el' + i,
-        color: `rgba(${parseInt(Math.random() * 255)},${parseInt(Math.random() * 255)},${parseInt(
-          Math.random() * 255
-        )},0.2)`,
+
         props: {
           x: Math.round(Math.random() * container.offsetWidth),
           y: Math.round(Math.random() * container.offsetHeight),
@@ -168,7 +165,6 @@
         },
         move: (event) => {
           let dom = event.target;
-          console.log(event);
 
           // sizePos.x += event.dx;
           // sizePos.y += event.dy;
@@ -232,14 +228,17 @@
     position: absolute;
   }
   .elmt-item {
-    border: dashed 2px gray;
+    border: dashed 2px rgb(30, 144, 255);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     position: absolute;
     font-size: 48px;
+    color: rgb(30, 144, 255);
+    background-color: white;
   }
   .elmt-item.active {
-    border: solid 2px rgb(30, 144, 255);
+    color: white;
+    background-color: rgb(30, 144, 255);
   }
 </style>
