@@ -1,7 +1,43 @@
-# Vue 3 + Vite
+# 距离提示辅助线
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 一个点到一个矩形的距离
 
-## Recommended IDE Setup
+- 点到左边
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- 点到右边
+
+- 点到上边
+
+- 点到下边
+
+## 一个矩形与另一个矩形的距离
+
+- 矩形 1 的左边 vs 矩形 2 的左边，矩形 2 的右边
+
+- 矩形 1 的右边 vs 矩形 2 的左边，矩形 2 的右边
+
+- 矩形 1 的上边 vs 矩形 2 的上边，矩形 2 的下边
+
+- 矩形 1 的下边 vs 矩形 2 的上边，矩形 2 的下边
+
+取矩形 1 每个情况的最小值就是对应边到矩形 2 的距离
+
+## 判断一个矩形是否在附近
+
+参考矩形另一个矩形的距离在 nearD 范围内即在附近，绘制对应的辅助线.
+当某个边重合，距离为 0 不进行绘制。
+
+## 参考矩形
+
+```js
+{
+x:100,
+y:200,
+width:300,
+height:400
+}
+```
+
+当前矩形需要绘制相对于父容器的上下边界和距离，左右边界，宽高
+
+## interactJs 拖拉拽改变大小和位置

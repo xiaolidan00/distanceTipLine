@@ -33,8 +33,9 @@
 </template>
 <script setup>
   import interact from 'interactjs';
-  import { ref, onMounted, computed, nextTick } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { getGuideLine, setNearDistance } from '../libs/distanceTipLine';
+  //设置附近的最大距离
   setNearDistance(100);
   const activeElement = computed(() => {
     if (active.value) {
@@ -42,34 +43,48 @@
     }
     return {};
   });
+  //选中元素id
   const active = ref();
+  //元素list
   const elmts = ref([]);
+  //横向辅助线
   const guideLineH = ref([]);
+  //纵向辅助线
   const guideLineV = ref([]);
-  const setElementSize = (rect) => {
+  //更新list里面对应元素的数据
+  const setElement = (rect) => {
     let elmtIndex = elmts.value.findIndex((item) => item.id == active.value);
     let item = elmts.value[elmtIndex];
     item.props = rect;
     elmts.value.splice(elmtIndex, 1, item);
   };
+  //激活元素
   const onActiveElmt = (id) => {
     active.value = id;
 
     createGuideLine();
   };
+  //计算辅助线
+  let isLock = false;
   const createGuideLine = () => {
-    nextTick(() => {
-      let { h, v } = getGuideLine(activeElement.value, elmts.value, '#elmtContainer');
-      guideLineH.value = h;
-      guideLineV.value = v;
-    });
+    if (!isLock) {
+      isLock = true;
+      setTimeout(() => {
+        let { h, v } = getGuideLine(activeElement.value, elmts.value, '#elmtContainer');
+        guideLineH.value = h;
+        guideLineV.value = v;
+        isLock = false;
+      }, 50);
+    }
   };
+  //清空辅助线
   const cleanActive = () => {
     active.value = '';
     guideLineH.value = [];
     guideLineV.value = [];
   };
   onMounted(() => {
+    //随机生成界面元素
     let list = [];
     let container = document.getElementById('elmtContainer');
     for (let i = 0; i < 10; i++) {
@@ -86,6 +101,7 @@
     elmts.value = list;
 
     const position = { x: 0, y: 0 };
+    //移动位置
     interact('.elmt-item').draggable({
       listeners: {
         start(event) {
@@ -108,7 +124,7 @@
             height: parseInt(dom.style.height),
             width: parseInt(dom.style.width)
           };
-          setElementSize(newRect);
+          setElement(newRect);
           createGuideLine();
         },
         end(event) {
@@ -120,7 +136,7 @@
             height: parseInt(dom.style.height),
             width: parseInt(dom.style.width)
           };
-          setElementSize(newRect);
+          setElement(newRect);
           createGuideLine();
         }
       }
@@ -129,6 +145,7 @@
     //   x: 0,
     //   y: 0
     // };
+    //改变大小
     interact('.elmt-item').resizable({
       edges: {
         top: false,
@@ -159,7 +176,7 @@
             height: parseInt(event.rect.height),
             width: parseInt(event.rect.width)
           };
-          setElementSize(newRect);
+          setElement(newRect);
           createGuideLine();
         },
         end: (event) => {
@@ -170,7 +187,7 @@
             height: parseInt(dom.style.height),
             width: parseInt(dom.style.width)
           };
-          setElementSize(newRect);
+          setElement(newRect);
           createGuideLine();
         }
       }

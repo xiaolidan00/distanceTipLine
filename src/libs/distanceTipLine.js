@@ -1,21 +1,3 @@
-/**
- * 检查组件是否在选框范围内
- * @param {Object} props 组件位置大小数据
- * @param {Object} rect 范围
- * @returns {Boolean}
- */
-export function checkPostion(props, rect) {
-  if (
-    rect.x <= props.x &&
-    rect.y <= props.y &&
-    rect.x + rect.width >= props.x + props.width &&
-    rect.y + rect.height >= props.y + props.height
-  ) {
-    return true;
-  }
-  return false;
-}
-
 //附近距离
 let nearD = 160;
 export function setNearDistance(d) {
@@ -27,12 +9,6 @@ export function setNearDistance(d) {
  * @returns {Boolean}
  */
 function checkNear(props, rect) {
-  if (checkPostion(props, rect)) {
-    return true;
-  }
-  if (checkPostion(rect, props)) {
-    return true;
-  }
   let xD = getXDistance(props, rect);
   let yD = getYDistance(props, rect);
   if (Math.min(...xD) <= nearD || Math.min(...yD) <= nearD) {
